@@ -1,12 +1,12 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from anthropic import Anthropic
+from groq import Groq
 import os
 
 app = Flask(__name__)
-CORS(app)  # Frontend থেকে request allow করবে
+CORS(app)
 
-client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))  # 🔐 Key এখানে, কেউ দেখতে পাবে না
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))  # 🔐 Railway Variables এ দেবে
 
 SYSTEM_PROMPT = """You are "Foodie" 🍔, the fun and friendly AI assistant for Food Heaven restaurant in Rangpur, Bangladesh!
 
@@ -48,21 +48,23 @@ def chat():
     data = request.json
     history = data.get("history", [])
 
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}] + history
+
     try:
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=messages,
             max_tokens=500,
-            system=SYSTEM_PROMPT,
-            messages=history
+            temperature=0.8
         )
-        reply = response.content[0].text
+        reply = response.choices[0].message.content
         return jsonify({"reply": reply})
     except Exception as e:
         return jsonify({"reply": "দুঃখিত, সমস্যা হয়েছে! আবার চেষ্টা করুন।", "error": str(e)}), 500
 
 @app.route("/")
 def index():
-    return "✅ Food Heaven Chatbot Backend is running!"
+    return send_from_directory(".", "index.html")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
