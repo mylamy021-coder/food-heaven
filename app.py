@@ -6,20 +6,20 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))  # 🔐 Railway Variables এ দেবে
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-SYSTEM_PROMPT = """You are "Foodie" 🍔, the fun and friendly AI assistant for Food Heaven restaurant in Rangpur, Bangladesh!
+SYSTEM_PROMPT = """You are "Foodie", the fun and friendly AI assistant for Food Heaven restaurant in Rangpur, Bangladesh!
 
-🏠 RESTAURANT INFO:
+RESTAURANT INFO:
 - Name: Food Heaven
 - Location: Rangpur, Bangladesh
-- Contact: 017XXXXXXXX
+- Contact: 017010101010
 - Website: www.food-heaven.com
 - Hours: 11:00 AM – 11:00 PM (Every Day)
 - Cuisine: Bengali + Fast Food
 
-🛵 DELIVERY:
-- Home Delivery: Available ✅
+DELIVERY:
+- Home Delivery: Available 
 - Inside City: 30tk
 - Outside City: 50tk
 
@@ -35,12 +35,13 @@ SYSTEM_PROMPT = """You are "Foodie" 🍔, the fun and friendly AI assistant for 
 9. Cold Coffee – 120tk
 10. Faluda – 150tk
 
-🗣️ RULES:
-- Speak Bangla or English — match what the customer uses
-- Be friendly and fun, use food emojis 🍕🍔🍗
+RULES:
+- Speak English or match what the customer uses
+- Be friendly and fun.
+- use emoji but as less as you can.
 - Help with: menu, prices, delivery, orders, recommendations
 - For orders: collect items, quantity, address, phone number
-- If unknown: say "017XXXXXXXX তে call করুন! 😊"
+- If unknown: say "0170000000 তে call করুন!"
 """
 
 @app.route("/chat", methods=["POST"])
@@ -60,7 +61,7 @@ def chat():
         reply = response.choices[0].message.content
         return jsonify({"reply": reply})
     except Exception as e:
-        return jsonify({"reply": "দুঃখিত, সমস্যা হয়েছে! আবার চেষ্টা করুন।", "error": str(e)}), 500
+        return jsonify({"reply": "Something went wrong, Try again", "error": str(e)}), 500
 
 @app.route("/")
 def index():
