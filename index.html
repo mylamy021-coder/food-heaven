@@ -84,7 +84,7 @@
 <header>
   <div class="avatar">🍔</div>
   <div class="header-text">
-    <h1>Food Heaven – Foodie 🤖</h1>
+    <h1>Food Heaven – Foodie </h1>
     <p><span class="status-dot"></span>Online • Rangpur • 11AM–11PM</p>
   </div>
 </header>
@@ -93,7 +93,7 @@
   <div class="msg-row bot">
     <div class="msg-avatar">🍔</div>
     <div>
-      <div class="bubble">আসসালামু আলাইকুম! 👋 আমি <b>Foodie</b> — Food Heaven-এর AI assistant!<br><br>আজকে কী খেতে মন চাইছে? 😋 Menu দেখতে চাইলে বলো, বা সরাসরি order করো!</div>
+      <div class="bubble"> Hi! I'm <b>Foodie</b> — An AI assistant for Food Heaven!<br><br>Ask if you want to see the menu, or just place your order directly!</div>
       <div class="time">Just now</div>
     </div>
   </div>
@@ -106,19 +106,18 @@
 </div>
 
 <div class="quick-replies">
-  <button class="quick-btn" onclick="sendQuick('📋 Menu দেখাও')">📋 Menu দেখাও</button>
-  <button class="quick-btn" onclick="sendQuick('🛵 Delivery charge কত?')">🛵 Delivery info</button>
-  <button class="quick-btn" onclick="sendQuick('⏰ Opening time কখন?')">⏰ Opening time</button>
-  <button class="quick-btn" onclick="sendQuick('🍗 Best item কোনটা?')">🍗 Best item</button>
+  <button class="quick-btn" onclick="sendQuick('📋 Menu')">📋 Menu</button>
+  <button class="quick-btn" onclick="sendQuick('🛵 Delivery charge')">🛵 Delivery info</button>
+  <button class="quick-btn" onclick="sendQuick('⏰ Opening time')">⏰ Opening time</button>
+  <button class="quick-btn" onclick="sendQuick('🍗 Best item')">🍗 Best item</button>
 </div>
 
 <div class="input-bar">
-  <textarea id="user-input" rows="1" placeholder="কিছু জিজ্ঞেস করো বা order দাও..."></textarea>
+  <textarea id="user-input" rows="1" placeholder="Ask anything or place order..."></textarea>
   <button id="send-btn" onclick="sendMessage()">➤</button>
 </div>
 
 <script>
-  // ✅ SECURE: API key নেই এখানে! শুধু তোমার Railway backend URL দাও
   const BACKEND_URL = "https://web-production-3b39a.up.railway.app/chat";
 
   let history = [];
@@ -163,13 +162,13 @@
         body: JSON.stringify({history})
       });
       const data = await res.json();
-      const reply = data.reply || 'দুঃখিত, সমস্যা হয়েছে!';
+      const reply = data.reply || 'Something wnt wrong!';
       history.push({role:'assistant', content:reply});
       setTyping(false);
       appendMsg(reply, 'bot');
     } catch(e) {
       setTyping(false);
-      appendMsg('❌ Server এ connect হচ্ছে না! Backend চালু আছে কিনা দেখো।', 'bot');
+      appendMsg('Failed to connect server', 'bot');
     }
   }
 
